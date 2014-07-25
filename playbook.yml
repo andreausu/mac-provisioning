@@ -33,10 +33,12 @@
         - openssl
         - php55
         - php55-intl
+        - php55-mcrypt
         - php55-redis
         - composer
         - phpunit
         - redis
+        - terminal-notifier
         - wget
         - zsh
 
@@ -83,4 +85,5 @@
         - sass
 
     - name: Rejoice!
-      osx_say: msg="Mac successfully provisioned!" voice=Victoria
+      shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"
+
