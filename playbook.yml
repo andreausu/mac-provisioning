@@ -1,0 +1,86 @@
+---
+- hosts: localhost
+  connection: local
+  sudo_user: root
+  sudo: False
+
+  tasks:
+    - name: Ensure /etc/paths are in the correct order
+      sudo: True
+      copy: src=files/paths dest=/tmp/paths owner=root
+
+    - name: Ensure required reis are tapped
+      homebrew_tap: tap={{ item }} state=present
+      with_items:
+        - caskroom/cask
+        - homebrew/dupes
+        - homebrew/versions
+        #- homebrew/homebrew-php
+
+    - name: Ensure required packages are installed
+      homebrew: name={{ item }} state=present
+      with_items:
+        - ansible
+        - automake
+        - brew-cask
+        - curl
+        - elasticsearch
+        - git
+        - jsonpp
+        - nmap
+        - node
+        - nginx
+        - openssl
+        - php55
+        - php55-intl
+        - php55-redis
+        - composer
+        - phpunit
+        - redis
+        - wget
+        - zsh
+
+    - name: Ensure required applications are installed
+      homebrew_cask: name={{ item }} state=present
+      with_items:
+        - skype
+        - bitcasa
+        - firefox
+        - virtualbox
+        - vagrant
+        - phpstorm
+        - spotify
+        - sequel-pro
+
+    - name: Ensure oh-my-zsh is installed
+      stat: path=~/.zshrc
+      register: omz_file
+
+    - name: Ensure oh-my-zsh is installed
+      shell: "curl -L http://install.ohmyz.sh | sh"
+      when: omz_file.stat.exists == False
+
+    - name: Ensure rvm is installed
+      stat: path=~/.rvm
+      register: rvm_folder
+
+    - name: Ensure rvm is installed
+      shell: "curl -sSL https://get.rvm.io | bash -s stable --ruby"
+      when: rvm_folder.stat.isdir is not defined
+
+    - name: Ensure required npm packages are installed
+      npm: name={{ item }} global=yes state=present
+      with_items:
+        - coffee-script
+        - brunch
+        - bower
+
+    - name: Ensure required gems are installed
+      gem: name={{ item }} state=present user_install=no
+      with_items:
+        - capifony
+        - capistrano_rsync_with_remote_cache
+        - sass
+
+    - name: Rejoice!
+      osx_say: msg="Mac successfully provisioned!" voice=Victoria
