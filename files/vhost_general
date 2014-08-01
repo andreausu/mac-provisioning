@@ -1,0 +1,24 @@
+server {
+    listen 80 default_server;
+
+    server_name _;
+
+    return 403;
+}
+
+server {
+    listen 80;
+
+    server_name  127.0.0.1 localhost;
+
+    root         /Users/{{ ansible_ssh_user }}/Development/;
+
+    index index.php;
+
+    location ~ \.php$ {
+        try_files            $uri =404;
+        fastcgi_pass         127.0.0.1:9000;
+        fastcgi_buffer_size  32k;
+        fastcgi_buffers      32 8k;
+    }
+}

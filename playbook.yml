@@ -7,7 +7,7 @@
   tasks:
     - name: Ensure /etc/paths are in the correct order
       sudo: True
-      copy: src=files/paths dest=/tmp/paths owner=root
+      copy: src=files/paths dest=/etc/paths owner=root
 
     - name: Ensure required reis are tapped
       homebrew_tap: tap={{ item }} state=present
@@ -31,16 +31,24 @@
         - node
         - nginx
         - openssl
-        - php55
-        - php55-intl
-        - php55-mcrypt
-        - php55-redis
-        - composer
-        - phpunit
         - redis
         - terminal-notifier
         - wget
         - zsh
+
+    - name: Ensure php is installed
+      homebrew: name=php55 install_options=with-fpm
+
+    - name: Ensure php dependencies are installed
+      homebrew: name={{ item }} state=present
+      with_items:
+        - php55-intl
+        - php55-mcrypt
+        - php55-opcache
+        - php55-redis
+        - php55-xdebug
+        - composer
+        - phpunit
 
     - name: Ensure required applications are installed
       homebrew_cask: name={{ item }} state=present
@@ -83,6 +91,31 @@
         - capifony
         - capistrano_rsync_with_remote_cache
         - sass
+
+    - name: Ensure nginx sites* dirs are present
+      file: path=/usr/local/etc/nginx/{{ item }} state=directory
+      with_items:
+        - 'sites-enabled'
+
+    - name: Ensure nginx configuration file is at the latest version.
+      copy: src=files/{{ item }} dest=/usr/local/etc/nginx/
+      with_items:
+        - nginx.conf
+        - fastcgi_params
+
+    - name: Ensure nginx vhosts are at the latest version.
+      template: src='files/vhost_{{ item }}' dest=/usr/local/etc/nginx/sites-enabled/
+      with_items:
+        - general
+        - sf2
+
+    - name: Ensure php.ini config is in place
+      copy: src=files/php.ini dest=/usr/local/etc/php/5.5/
+
+    - name: Ensure that additionals php extensions are in place
+      template: src=files/{{ item }} dest=/usr/local/etc/php/5.5/conf.d/
+      with_items:
+        - xdebug.ini
 
     - name: Rejoice!
       shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"

@@ -1,0 +1,18 @@
+server {
+	listen 80;
+
+	server_name  sf2.dev;
+	root         /Users/{{ ansible_ssh_user }}/Development/mine/sf2/web;
+
+	location / {
+		index app_dev.php;
+		try_files $uri $uri/ /app_dev.php?$query_string;
+	}
+
+	location ~ ^/(app_dev|config|clear_cache)\.php$ {
+		try_files            $uri =404;
+		fastcgi_pass         127.0.0.1:9000;
+		fastcgi_buffer_size  32k;
+		fastcgi_buffers      32 8k;
+	}
+}
