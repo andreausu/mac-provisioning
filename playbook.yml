@@ -15,7 +15,7 @@
         - caskroom/cask
         - homebrew/dupes
         - homebrew/versions
-        - homebrew/homebrew-php
+        - homebrew/php
 
     - name: Ensure required packages are installed
       homebrew: name={{ item }} state=present
