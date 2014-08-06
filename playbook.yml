@@ -9,13 +9,13 @@
       sudo: True
       copy: src=files/paths dest=/etc/paths owner=root
 
-    - name: Ensure required reis are tapped
+    - name: Ensure required repositories are tapped
       homebrew_tap: tap={{ item }} state=present
       with_items:
         - caskroom/cask
         - homebrew/dupes
         - homebrew/versions
-        #- homebrew/homebrew-php
+        - homebrew/homebrew-php
 
     - name: Ensure required packages are installed
       homebrew: name={{ item }} state=present
@@ -31,8 +31,11 @@
         - node
         - nginx
         - openssl
+        - percona-server
+        - percona-toolkit
         - redis
         - terminal-notifier
+        - youtube-dl
         - wget
         - zsh
 
@@ -98,7 +101,7 @@
         - 'sites-enabled'
 
     - name: Ensure nginx configuration file is at the latest version.
-      copy: src=files/{{ item }} dest=/usr/local/etc/nginx/
+      template: src=files/{{ item }} dest=/usr/local/etc/nginx/
       with_items:
         - nginx.conf
         - fastcgi_params
