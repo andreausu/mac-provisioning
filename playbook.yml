@@ -64,6 +64,7 @@
         - phpstorm
         - spotify
         - sequel-pro
+        - dropbox
 
     - name: Ensure oh-my-zsh is installed
       stat: path=~/.zshrc
