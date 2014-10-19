@@ -3,7 +3,7 @@
 set -e
 
 if [ ! -f /usr/local/bin/brew ]; then
-	ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 if [ ! -f /usr/local/bin/ansible ]; then

@@ -24,7 +24,6 @@
         - automake
         - brew-cask
         - curl
-        - elasticsearch
         - git
         - jsonpp
         - nmap
@@ -32,7 +31,7 @@
         - nginx
         - openssl
         - percona-server
-        - percona-toolkit
+#        - percona-toolkit
         - redis
         - terminal-notifier
         - youtube-dl
@@ -45,9 +44,7 @@
     - name: Ensure php dependencies are installed
       homebrew: name={{ item }} state=present
       with_items:
-        - php55-intl
         - php55-mcrypt
-        - php55-opcache
         - php55-redis
         - php55-xdebug
         - composer
@@ -65,6 +62,7 @@
         - spotify
         - sequel-pro
         - dropbox
+        - vlc
 
     - name: Ensure oh-my-zsh is installed
       stat: path=~/.zshrc
@@ -73,6 +71,9 @@
     - name: Ensure oh-my-zsh is installed
       shell: "curl -L http://install.ohmyz.sh | sh"
       when: omz_file.stat.exists == False
+
+    - name: Ensure .zshrc file is in place
+      copy: src=files/.zshrc dest=~/.zshrc
 
     - name: Ensure rvm is installed
       stat: path=~/.rvm
@@ -88,13 +89,14 @@
         - coffee-script
         - brunch
         - bower
+        - less
 
-    - name: Ensure required gems are installed
-      gem: name={{ item }} state=present user_install=no
-      with_items:
-        - capifony
-        - capistrano_rsync_with_remote_cache
-        - sass
+    #- name: Ensure required gems are installed
+    #  gem: name={{ item }} state=present user_install=no
+    #  with_items:
+    #    - capifony
+    #    - capistrano_rsync_with_remote_cache
+    #    - sass
 
     - name: Ensure nginx sites* dirs are present
       file: path=/usr/local/etc/nginx/{{ item }} state=directory
