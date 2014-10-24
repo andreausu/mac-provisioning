@@ -54,7 +54,6 @@
       homebrew_cask: name={{ item }} state=present
       with_items:
         - skype
-        - bitcasa
         - firefox
         - virtualbox
         - vagrant
