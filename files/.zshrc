@@ -45,7 +45,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(brew cap common-aliases composer gem gitfast history jsontools npm redis-cli rvm sublime sudo symfony2 urltools vagrant)
+plugins=(atom brew cap common-aliases composer gem gitfast history jsontools npm redis-cli rvm sublime sudo symfony2 urltools vagrant)
 
 source $ZSH/oh-my-zsh.sh
 
