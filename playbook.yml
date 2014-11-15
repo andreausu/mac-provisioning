@@ -33,6 +33,7 @@
         - percona-server
 #        - percona-toolkit
         - redis
+        - rsync
         - terminal-notifier
         - youtube-dl
         - wget
