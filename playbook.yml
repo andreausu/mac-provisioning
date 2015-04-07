@@ -22,14 +22,19 @@
       with_items:
         - ansible
         - automake
+        - awscli
+        - boot2docker
         - brew-cask
         - curl
+        - docker
         - git
+        - go
         - jsonpp
         - nmap
         - node
         - nginx
         - openssl
+        - optipng
         - percona-server
 #        - percona-toolkit
         - redis
@@ -63,6 +68,9 @@
         - sequel-pro
         - dropbox
         - vlc
+        - filezilla
+        - xquartz
+        - wireshark
 
     - name: Ensure oh-my-zsh is installed
       stat: path=~/.zshrc
@@ -125,4 +133,3 @@
 
     - name: Rejoice!
       shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"
-
