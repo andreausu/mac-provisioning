@@ -15,7 +15,6 @@
         - caskroom/cask
         - homebrew/dupes
         - homebrew/versions
-        - homebrew/php
 
     - name: Ensure required packages are installed
       homebrew: name={{ item }} state=present
@@ -23,38 +22,26 @@
         - ansible
         - automake
         - awscli
-        - boot2docker
         - brew-cask
         - curl
         - docker
+        - docker-compose
+        - docker-machine
+        - fdupes
         - git
-        - go
         - jsonpp
+        - md5sha1sum
+        - netcat
         - nmap
-        - node
-        - nginx
         - openssl
         - optipng
-        - percona-server
-#        - percona-toolkit
+        - qcachegrind
         - redis
         - rsync
         - terminal-notifier
         - youtube-dl
         - wget
         - zsh
-
-    - name: Ensure php is installed
-      homebrew: name=php55 install_options=with-fpm
-
-    - name: Ensure php dependencies are installed
-      homebrew: name={{ item }} state=present
-      with_items:
-        - php55-mcrypt
-        - php55-redis
-        - php55-xdebug
-        - composer
-        - phpunit
 
     - name: Ensure required applications are installed
       homebrew_cask: name={{ item }} state=present
@@ -64,13 +51,22 @@
         - virtualbox
         - vagrant
         - phpstorm
-        - spotify
+        - atom
         - sequel-pro
-        - dropbox
         - vlc
         - filezilla
         - xquartz
         - wireshark
+        - hocus-focus
+        - caffeine
+        - macclean
+        - utorrent
+        - calibre
+        - gpgtools
+        - the-unarchiver
+        - tunnelblick
+        - dropbox
+        - little-snitch
 
     - name: Ensure oh-my-zsh is installed
       stat: path=~/.zshrc
@@ -83,53 +79,8 @@
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
 
-    - name: Ensure rvm is installed
-      stat: path=~/.rvm
-      register: rvm_folder
-
-    - name: Ensure rvm is installed
-      shell: "curl -sSL https://get.rvm.io | bash -s stable --ruby"
-      when: rvm_folder.stat.isdir is not defined
-
-    - name: Ensure required npm packages are installed
-      npm: name={{ item }} global=yes state=present
-      with_items:
-        - coffee-script
-        - brunch
-        - bower
-        - less
-
-    #- name: Ensure required gems are installed
-    #  gem: name={{ item }} state=present user_install=no
-    #  with_items:
-    #    - capifony
-    #    - capistrano_rsync_with_remote_cache
-    #    - sass
-
-    - name: Ensure nginx sites* dirs are present
-      file: path=/usr/local/etc/nginx/{{ item }} state=directory
-      with_items:
-        - 'sites-enabled'
-
-    - name: Ensure nginx configuration file is at the latest version.
-      template: src=files/{{ item }} dest=/usr/local/etc/nginx/
-      with_items:
-        - nginx.conf
-        - fastcgi_params
-
-    - name: Ensure nginx vhosts are at the latest version.
-      template: src='files/vhost_{{ item }}' dest=/usr/local/etc/nginx/sites-enabled/
-      with_items:
-        - general
-        - sf2
-
-    - name: Ensure php.ini config is in place
-      copy: src=files/php.ini dest=/usr/local/etc/php/5.5/
-
-    - name: Ensure that additionals php extensions are in place
-      template: src=files/{{ item }} dest=/usr/local/etc/php/5.5/conf.d/
-      with_items:
-        - xdebug.ini
+    - name: Ensure update_docker_nfs_mounts file is in place
+      copy: src=files/update_docker_nfs_mounts.sh dest=/usr/local/bin/update_docker_nfs_mounts mode=0755
 
     - name: Rejoice!
       shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"
