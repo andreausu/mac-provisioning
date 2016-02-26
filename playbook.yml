@@ -12,7 +12,6 @@
     - name: Ensure required repositories are tapped
       homebrew_tap: tap={{ item }} state=present
       with_items:
-        - caskroom/cask
         - homebrew/dupes
         - homebrew/versions
 
@@ -22,7 +21,6 @@
         - ansible
         - automake
         - awscli
-        - brew-cask
         - curl
         - docker
         - docker-compose
@@ -78,9 +76,6 @@
 
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
-
-    - name: Ensure update_docker_nfs_mounts file is in place
-      copy: src=files/update_docker_nfs_mounts.sh dest=/usr/local/bin/update_docker_nfs_mounts mode=0755
 
     - name: Rejoice!
       shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"
