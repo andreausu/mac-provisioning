@@ -22,22 +22,34 @@
         - automake
         - awscli
         - curl
+        - ddrescue
         - docker
         - docker-compose
         - docker-machine
         - fdupes
         - git
+        - gnu-sed
         - jsonpp
         - md5sha1sum
+        - mitmproxy
+        - mkvtoolnix
+        - mtr
         - netcat
         - nmap
+        - node
         - openssl
         - optipng
-        - qcachegrind
+        - packer
+        # - qcachegrind
         - redis
         - rsync
+        - speedtest-cli
         - terminal-notifier
+        - tor
+        - tsung
+        - vim
         - youtube-dl
+        - watch
         - wget
         - zsh
 
@@ -46,19 +58,17 @@
       with_items:
         - skype
         - firefox
+        - google-chrome
         - virtualbox
-        - vagrant
-        - phpstorm
         - atom
         - sequel-pro
         - vlc
         - filezilla
         - xquartz
         - wireshark
-        - hocus-focus
+#        - hocus-focus
         - caffeine
         - macclean
-        - utorrent
         - calibre
         - gpgtools
         - the-unarchiver
