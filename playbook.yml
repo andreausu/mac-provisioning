@@ -4,29 +4,41 @@
   sudo_user: root
   sudo: False
 
+  vars:
+    mas_email: andreausu@gmail.com
+    mas_installed_apps:
+      - { id: 1333542190, name: "1Password 7" }
+      - { id: 937984704, name: "Amphetamine" }
+      - { id: 1091189122, name: "Bear" }
+      - { id: 1335413823, name: "Ka-Block!" }
+      - { id: 409203825, name: "Numbers" }
+      - { id: 409201541, name: "Pages" }
+      - { id: 639968404, name: "Parcel" }
+      - { id: 803453959, name: "Slack" }
+      - { id: 946399090, name: "Telegram Desktop" }
+      - { id: 1384080005, name: "Tweetbot" }
+
+  vars_prompt:
+    - name: mas_password
+      prompt: "Please insert your Mac App Store password ({{ mas_email }})"
+
+  roles:
+    - geerlingguy.mas
+
   tasks:
-    - name: Ensure /etc/paths are in the correct order
-      sudo: True
-      copy: src=files/paths dest=/etc/paths owner=root
-
-    - name: Ensure required repositories are tapped
-      homebrew_tap: tap={{ item }} state=present
-      with_items:
-        - homebrew/dupes
-        - homebrew/versions
-
     - name: Ensure required packages are installed
       homebrew: name={{ item }} state=present
       with_items:
         - ansible
         - automake
         - awscli
+        - cmake
+        - coreutils # gdate, ...
         - curl
         - ddrescue
-        - docker
-        - docker-compose
-        - docker-machine
+        - elixir
         - fdupes
+        - fswatch
         - git
         - gnu-sed
         - jsonpp
@@ -34,20 +46,26 @@
         - mitmproxy
         - mkvtoolnix
         - mtr
+        - mysql-client
+        - mysql-utilities
         - netcat
         - nmap
         - node
         - openssl
         - optipng
         - packer
-        # - qcachegrind
+        - percona-toolkit
         - redis
         - rsync
+        - shellcheck
         - speedtest-cli
+        - sqlite
+        - telnet
         - terminal-notifier
         - tor
         - tsung
         - vim
+        - yarn
         - youtube-dl
         - watch
         - wget
@@ -56,36 +74,70 @@
     - name: Ensure required applications are installed
       homebrew_cask: name={{ item }} state=present
       with_items:
-        - skype
-        - firefox
-        - google-chrome
-        - virtualbox
+        - appcleaner
         - atom
-        - sequel-pro
-        - vlc
+        - docker # docker for mac
+        - dropbox
         - filezilla
-        - xquartz
-        - wireshark
-#        - hocus-focus
-        - caffeine
-        - macclean
-        - calibre
-        - gpgtools
+        - firefox
+        - geekbench
+        - google-chrome
+        - gpg-suite # gpgmail not included anymore because it is a paid extension
+        - iterm2
+        - sublime-text
+        - skype
+        - spectacle
+        - tableplus
         - the-unarchiver
         - tunnelblick
-        - dropbox
+        - vlc
+        - xquartz
+        - whatsapp
+        - wireshark
+
+    - name: Ensure required applications are installed
+      homebrew_cask: name={{ item }} state=present
+      when: role == "home"
+      with_items:
+        - backblaze
         - little-snitch
 
-    - name: Ensure oh-my-zsh is installed
-      stat: path=~/.zshrc
-      register: omz_file
-
-    - name: Ensure oh-my-zsh is installed
-      shell: "curl -L http://install.ohmyz.sh | sh"
-      when: omz_file.stat.exists == False
+    - name: Ensure required applications are installed
+      homebrew_cask: name={{ item }} state=present
+      when: role == "work"
+      with_items:
+        - workplace-chat
 
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
+
+    - name: Ensure cleanup script is installed
+      copy: src=files/cleanup dest=/usr/local/bin/cleanup mode=0755
+
+    # per qualche motivo non da errore, però poi non viene installato
+    # - name: Install prima-twig
+    #   gem: name=prima-twig state=present
+
+    - name: Check if biscuit is installed
+      stat: path=/usr/local/bin/biscuit
+      register: biscuit_file
+
+    - name: Download biscuit
+      get_url:
+        url: https://github.com/dcoker/biscuit/releases/download/v0.1.3/biscuit-darwin_amd64.tgz
+        dest: /tmp/biscuit-darwin_amd64.tar.gz
+        mode: 0440
+      when: biscuit_file.stat.exists == False
+
+    - name: Untar biscuit
+      shell: tar xzvf /tmp/biscuit-darwin_amd64.tar.gz && mv biscuit /usr/local/bin/biscuit && chmod 755 /usr/local/bin/biscuit
+      when: biscuit_file.stat.exists == False
+
+    - name: Install electro future
+      get_url:
+        url: https://raw.githubusercontent.com/aleinside/dotfiles/master/future/electro-future.sh
+        dest: /usr/local/bin/electro
+        mode: 0755
 
     - name: Rejoice!
       shell: "terminal-notifier -sound default -group 'terminal-ansible' -title 'Ansible' -subtitle 'Finished' -message 'Mac successfully provisioned!' -activate 'com.apple.Terminal'"
