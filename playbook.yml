@@ -42,6 +42,7 @@
         - git
         - gnu-sed
         - jsonpp
+        - jq
         - md5sha1sum
         - mitmproxy
         - mkvtoolnix
