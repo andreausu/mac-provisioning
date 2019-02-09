@@ -38,6 +38,7 @@
         - ddrescue
         - elixir
         - fdupes
+        - ffmpeg
         - fswatch
         - git
         - gnu-sed
