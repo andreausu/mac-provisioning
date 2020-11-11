@@ -122,8 +122,11 @@
         - discord
         - java
         - lastpass
+        - microsoft-teams
         - phpstorm
+        - webex-meetings
         - workplace-chat
+        - zoomus
 
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
