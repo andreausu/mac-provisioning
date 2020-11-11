@@ -1,8 +1,6 @@
 ---
 - hosts: localhost
   connection: local
-  sudo_user: root
-  sudo: False
 
   vars:
     mas_email: andreausu@gmail.com
@@ -39,7 +37,6 @@
         - ddrescue
         - diff-pdf
         - dos2unix
-        - drone
         - elixir
         - excel-compare
         - exiftool
@@ -54,12 +51,10 @@
         - jsonpp
         - jq
         - kubernetes-cli
-        - md5sha1sum
         - mitmproxy
         - mkvtoolnix
         - mtr
         - mysql-client
-        - mysql-utilities
         - netcat
         - nmap
         - node
@@ -94,7 +89,6 @@
         - appcleaner
         - atom
         - docker # docker for mac
-        - filezilla
         - firefox
         - google-chrome
         - ngrok
@@ -120,7 +114,6 @@
       when: role == "work"
       with_items:
         - discord
-        - java
         - lastpass
         - microsoft-teams
         - phpstorm
