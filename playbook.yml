@@ -12,10 +12,9 @@
       - { id: 409183694 , name: "Keynote" }
       - { id: 409203825, name: "Numbers" }
       - { id: 409201541, name: "Pages" }
-      - { id: 639968404, name: "Parcel" }
       - { id: 803453959, name: "Slack" }
       - { id: 946399090, name: "Telegram Lite" }
-      - { id: 1384080005, name: "Tweetbot" }
+      - { id: 1451685025, name: "Wireguard" }
 
   vars_prompt:
     - name: mas_password
@@ -34,9 +33,9 @@
         - cmake
         - coreutils # gdate, ...
         - curl
-        - ddrescue
         - diff-pdf
         - dos2unix
+        - drone-cli
         - elixir
         - excel-compare
         - exiftool
@@ -71,6 +70,7 @@
         - streamlink
         - telnet
         - terminal-notifier
+        - terraform
         - tree
         - tor
         - vim
@@ -86,11 +86,11 @@
     - name: Ensure required applications are installed
       homebrew_cask: name={{ item }} state=present
       with_items:
-        - appcleaner
         - atom
         - docker # docker for mac
         - firefox
         - google-chrome
+        - insomnia
         - ngrok
         - sublime-text
         - tableplus
@@ -113,12 +113,13 @@
       homebrew_cask: name={{ item }} state=present
       when: role == "work"
       with_items:
+        - aws-vault
+        - cyberduck
         - discord
         - lastpass
         - microsoft-teams
-        - phpstorm
+        - tenable-nessus-agent
         - webex-meetings
-        - workplace-chat
         - zoomus
 
     - name: Ensure .zshrc file is in place
@@ -138,7 +139,7 @@
 
     - name: Download biscuit
       get_url:
-        url: https://github.com/primait/biscuit/releases/download/v0.1.6/biscuit-darwin_amd64.tgz
+        url: https://github.com/primait/biscuit/releases/download/v0.1.7/biscuit-darwin_amd64.tgz
         dest: /tmp/biscuit-darwin_amd64.tar.gz
         mode: 0440
       when: role == "work" and biscuit_file.stat.exists == False
