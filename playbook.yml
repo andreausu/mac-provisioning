@@ -24,103 +24,112 @@
     - geerlingguy.mas
 
   tasks:
+    - name: Ensure brew taps are installed
+      homebrew_tap:
+        name:
+          - drone/drone
+
     - name: Ensure required packages are installed
-      homebrew: name={{ item }} state=present
-      with_items:
-        - ansible
-        - automake
-        - awscli
-        - cmake
-        - coreutils # gdate, ...
-        - curl
-        - diff-pdf
-        - dos2unix
-        - drone-cli
-        - elixir
-        - excel-compare
-        - exiftool
-        - fdupes
-        - ffmpeg
-        - fswatch
-        - git
-        - go
-        - gnu-sed
-        - iperf3
-        - jsonnet
-        - jsonpp
-        - jq
-        - kubernetes-cli
-        - mitmproxy
-        - mkvtoolnix
-        - mtr
-        - mysql-client
-        - netcat
-        - nmap
-        - node
-        - openssl
-        - optipng
-        - p7zip
-        - packer
-        - percona-toolkit
-        - redis
-        - rsync
-        - shellcheck
-        - speedtest-cli
-        - sqlite
-        - streamlink
-        - telnet
-        - terminal-notifier
-        - terraform
-        - tree
-        - tor
-        - vim
-        - yamllint
-        - yarn
-        - youtube-dl
-        - watch
-        - wget
-        - xz
-        - zip
-        - zsh
+      homebrew:
+        name:
+          - ansible
+          - automake
+          - awscli
+          - cmake
+          - coreutils # gdate, ...
+          - curl
+          - diff-pdf
+          - dos2unix
+          - drone
+          - elixir
+          - excel-compare
+          - exiftool
+          - fdupes
+          - ffmpeg
+          - fswatch
+          - git
+          - go
+          - gnu-sed
+          - iperf3
+          - jsonnet
+          - jsonpp
+          - jq
+          - kubernetes-cli
+          - mitmproxy
+          - mkvtoolnix
+          - mtr
+          - mysql-client
+          - netcat
+          - nmap
+          - node
+          - openssl
+          - optipng
+          - p7zip
+          - packer
+          - percona-toolkit
+          - redis
+          - rsync
+          # - shellcheck m1 incompatible atm
+          - speedtest-cli
+          - sqlite
+          - streamlink
+          - telnet
+          - terminal-notifier
+          - terraform
+          - tree
+          - tor
+          - vim
+          - yamllint
+          - yarn
+          - youtube-dl
+          - watch
+          - wget
+          - xz
+          - zip
+        state: present
 
     - name: Ensure required applications are installed
-      homebrew_cask: name={{ item }} state=present
-      with_items:
-        - atom
-        - docker # docker for mac
-        - firefox
-        - google-chrome
-        - insomnia
-        - ngrok
-        - sublime-text
-        - tableplus
-        - the-unarchiver
-        - tor-browser
-        - tunnelblick
-        - vlc
-        - xquartz
-        - whatsapp
-        - wireshark
+      homebrew_cask:
+        name:
+          - atom
+          - docker # docker for mac
+          - firefox
+          - google-chrome
+          - insomnia
+          - ngrok
+          - sublime-text
+          - tableplus
+          - the-unarchiver
+          - tor-browser
+          - tunnelblick
+          - vlc
+          - xquartz
+          - whatsapp
+          - wireshark
+        state: present
 
     - name: Ensure required applications are installed
-      homebrew_cask: name={{ item }} state=present
+      homebrew_cask:
+        name:
+          - backblaze
+          - little-snitch
+        state: present
       when: role == "home"
-      with_items:
-        - backblaze
-        - little-snitch
 
     - name: Ensure required applications are installed
-      homebrew_cask: name={{ item }} state=present
+      homebrew_cask:
+        name:
+          - amazon-chime
+          - aws-vault
+          - cyberduck
+          - discord
+          - lastpass
+          - microsoft-teams
+          - tenable-nessus-agent
+          - webex-meetings
+          - zoom
+        state: present
       when: role == "work"
-      with_items:
-        - aws-vault
-        - cyberduck
-        - discord
-        - lastpass
-        - microsoft-teams
-        - tenable-nessus-agent
-        - webex-meetings
-        - zoomus
 
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
