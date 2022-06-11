@@ -3,12 +3,10 @@
   connection: local
 
   vars:
-    mas_email: andreausu@gmail.com
     mas_installed_apps:
-      - { id: 1333542190, name: "1Password 7" }
+      - { id: 1365531024, name: "1Blocker" }
       - { id: 937984704, name: "Amphetamine" }
       - { id: 1091189122, name: "Bear" }
-      - { id: 1121192229 , name: "Better" }
       - { id: 409183694 , name: "Keynote" }
       - { id: 409203825, name: "Numbers" }
       - { id: 409201541, name: "Pages" }
@@ -16,18 +14,16 @@
       - { id: 946399090, name: "Telegram Lite" }
       - { id: 1451685025, name: "Wireguard" }
 
-  vars_prompt:
-    - name: mas_password
-      prompt: "Please insert your Mac App Store password ({{ mas_email }})"
-
   roles:
-    - geerlingguy.mas
+    - role: elliotweiser.osx-command-line-tools
+    - role: geerlingguy.mac.mas
 
   tasks:
     - name: Ensure brew taps are installed
       homebrew_tap:
         name:
           - drone/drone
+      when: role == "work"
 
     - name: Ensure required packages are installed
       homebrew:
@@ -40,7 +36,6 @@
           - curl
           - diff-pdf
           - dos2unix
-          - drone
           - elixir
           - excel-compare
           - exiftool
@@ -65,11 +60,9 @@
           - openssl
           - optipng
           - p7zip
-          - packer
-          - percona-toolkit
           - redis
           - rsync
-          # - shellcheck m1 incompatible atm
+          - shellcheck # m1 incompatible atm
           - speedtest-cli
           - sqlite
           - streamlink
@@ -91,12 +84,13 @@
     - name: Ensure required applications are installed
       homebrew_cask:
         name:
-          - atom
-          - docker # docker for mac
+          - appcleaner
+          - discord
           - firefox
+          - geekbench
           - google-chrome
           - insomnia
-          - ngrok
+          - homebrew/cask-drivers/logi-options-plus
           - sublime-text
           - tableplus
           - the-unarchiver
@@ -107,15 +101,25 @@
           - xquartz
           - whatsapp
           - wireshark
+          - zoom
         state: present
 
     - name: Ensure required applications are installed
       homebrew_cask:
         name:
           - backblaze
-          - little-snitch
+          - calibre
+          - cloudflare-warp
         state: present
       when: role == "home"
+
+    - name: Ensure required applications are installed
+      homebrew:
+        name:
+          - drone
+          - packer
+        state: present
+      when: role == "work"
 
     - name: Ensure required applications are installed
       homebrew_cask:
@@ -123,20 +127,16 @@
           - amazon-chime
           - aws-vault
           - cyberduck
-          - discord
+          - docker
           - lastpass
           - microsoft-teams
           - tenable-nessus-agent
           - webex-meetings
-          - zoom
         state: present
       when: role == "work"
 
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
-
-    - name: Ensure cleanup script is installed
-      copy: src=files/cleanup dest=/usr/local/bin/cleanup mode=0755
 
     - name: Install prima-twig
       gem: name=prima-twig state=present

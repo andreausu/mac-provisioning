@@ -97,3 +97,11 @@ source $ZSH/oh-my-zsh.sh
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 export PATH="$PATH:$HOME/.cargo/bin" # rustup
+
+sudo() {
+  unset -f sudo
+  if [[ "$(uname)" == 'Darwin' ]] && ! grep 'pam_tid.so' /etc/pam.d/sudo --silent; then
+    sudo sed -i -e '1s;^;auth       sufficient     pam_tid.so\n;' /etc/pam.d/sudo
+  fi
+  sudo "$@"
+}
