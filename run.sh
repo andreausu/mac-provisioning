@@ -30,7 +30,7 @@ if [ ! -f ~/.zshrc ]; then
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-ansible-galaxy install -r galaxy-roles.yml
+ansible-galaxy install -gr galaxy-roles.yml
 ansible-playbook -i local -e role=$1 playbook.yml -v -K
 
-# files/macos-settings.sh
+files/macos-settings.sh

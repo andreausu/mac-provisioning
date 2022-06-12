@@ -138,6 +138,9 @@
     - name: Ensure .zshrc file is in place
       copy: src=files/.zshrc dest=~/.zshrc
 
+    - name: Ensure cleanup script is installed
+      copy: src=files/cleanup dest=/usr/local/bin/cleanup mode=0755
+
     - name: Install prima-twig
       gem: name=prima-twig state=present
       when: role == "work"

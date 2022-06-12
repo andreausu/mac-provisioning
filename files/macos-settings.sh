@@ -14,18 +14,12 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Set standby delay to 24 hours (default is 1 hour)
-sudo pmset -a standbydelay 86400
-
 # Automatically quit printer app once the print jobs complete
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-# Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
 
 # Disable automatic capitalization as it’s annoying when typing code
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
@@ -47,8 +41,11 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
+# Adjust toolbar title rollover delay
+defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
+
 # Increase sound quality for Bluetooth headphones/headsets
-defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
+# defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
 # Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1
@@ -61,9 +58,6 @@ defaults write NSGlobalDomain AppleLanguages -array "en" "it"
 defaults write NSGlobalDomain AppleLocale -string "en_US@currency=EUR"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
 defaults write NSGlobalDomain AppleMetricUnits -bool true
-
-# Set the timezone; see `sudo systemsetup -listtimezones` for other values
-sudo systemsetup -settimezone "Europe/Rome" > /dev/null
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
@@ -173,12 +167,24 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 # Disable Java
 defaults write com.apple.Safari WebKitJavaEnabled -bool false
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool false
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabledForLocalFiles -bool false
 
 # Enable “Do Not Track”
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 
 # Update extensions automatically
 defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
+
+# Disable password and credit card auto filling
+defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+
+# Open a blank page in new windows / tabs
+defaults write com.apple.Safari NewTabBehavior -int 1
+defaults write com.apple.Safari NewWindowBehavior -int 1
+
+# Show full URLs
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 # Disable send and reply animations in Mail.app
 defaults write com.apple.mail DisableReplyAnimations -bool true
@@ -265,6 +271,47 @@ defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault
 defaults write com.apple.terminal SecureKeyboardEntry -bool true
 
 ###############################################################################
+# Energy saving                                                               #
+###############################################################################
+
+# Enable lid wakeup
+sudo pmset -a lidwake 1
+
+# Restart automatically on power loss
+sudo pmset -a autorestart 1
+
+# Restart automatically if the computer freezes
+sudo systemsetup -setrestartfreeze on
+
+# Sleep the display after 15 minutes
+sudo pmset -a displaysleep 15
+
+# Disable machine sleep while charging
+sudo pmset -c sleep 0
+
+# Set machine sleep to 5 minutes on battery
+sudo pmset -b sleep 5
+
+# Set standby delay to 24 hours (default is 1 hour)
+sudo pmset -a standbydelay 86400
+
+# Never go into computer sleep mode
+sudo systemsetup -setcomputersleep Off > /dev/null
+
+# # Hibernation mode
+# # 0: Disable hibernation (speeds up entering sleep mode)
+# # 3: Copy RAM to disk so the system state can still be restored in case of a
+# #    power failure.
+# sudo pmset -a hibernatemode 0
+
+# # Remove the sleep image file to save disk space
+# sudo rm /private/var/vm/sleepimage
+# # Create a zero-byte file instead…
+# sudo touch /private/var/vm/sleepimage
+# # …and make sure it can’t be rewritten
+# sudo chflags uchg /private/var/vm/sleepimage
+
+###############################################################################
 # CUSTOM                                                                      #
 ###############################################################################
 
@@ -273,31 +320,6 @@ defaults write "Default Window Settings" -string "Pro"
 defaults write "Startup Window Settings" -string "Pro"
 
 set +e
-
-for app in "Activity Monitor" \
-	"Address Book" \
-	"Calendar" \
-	"cfprefsd" \
-	"Contacts" \
-	"Dock" \
-	"Finder" \
-	"Google Chrome Canary" \
-	"Google Chrome" \
-	"Mail" \
-	"Messages" \
-	"Opera" \
-	"Photos" \
-	"Safari" \
-	"SizeUp" \
-	"Spectacle" \
-	"SystemUIServer" \
-	"Transmission" \
-	"Tweetbot" \
-	"Twitter" \
-	"iCal"; do
-	killall "${app}" &> /dev/null
-done
-
 set +x
 
 echo "Done. Note that some of these changes require a logout/restart to take effect."
