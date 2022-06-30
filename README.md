@@ -19,3 +19,4 @@ $ ./run.sh home|work
 - https://www.reddit.com/r/MacOSBeta/comments/qjgqjx/i_think_ive_found_a_fix_for_the_bluetooth/
 - https://mnpn.github.io/blog/airplay-network-disaster
 - https://twitter.com/benskuhn/status/1524791658381910023
+- https://discussions.apple.com/thread/8268678
