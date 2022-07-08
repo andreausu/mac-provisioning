@@ -107,7 +107,6 @@
     - name: Ensure required applications are installed
       homebrew_cask:
         name:
-          - backblaze
           - calibre
           - cloudflare-warp
         state: present
