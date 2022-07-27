@@ -65,6 +65,7 @@
           - openssl
           - optipng
           - p7zip
+          - pwgen
           - redis
           - rsync
           - shellcheck # m1 incompatible atm
@@ -115,6 +116,7 @@
         name:
           - calibre
           - cloudflare-warp
+          - mediainfo
         state: present
       when: role == "home"
 
