@@ -16,10 +16,10 @@ sudo chown andrea /usr/local/bin
 # Keep-alive sudo until `clenaup.sh` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if [ ! -f /usr/local/bin/brew ]; then
+if [ ! -f /opt/homebrew/bin/brew ]; then
 	NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
-	eval "$(/usr/local/bin/brew shellenv)"
+	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 if [ ! -f /usr/local/bin/ansible ]; then
