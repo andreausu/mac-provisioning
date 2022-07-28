@@ -65,6 +65,7 @@
           - openssl
           - optipng
           - p7zip
+          - poetry
           - pwgen
           - redis
           - rsync
