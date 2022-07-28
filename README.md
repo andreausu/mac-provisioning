@@ -15,7 +15,7 @@ $ ./run.sh home|work
 4. Configure safari extensions (1Blocker, 1Password)
 5. Enable unlock with apple watch
 6. To complete the installation of Cask logi-options-plus, you must also run the installer at: `l/latest/logioptionsplus_installer.app`
-7. Install Backblaze.
+7. Install Backblaze
 8. Enable App Expose in touchpad settings
 9. Sign in to Music using the gmail account
 10. Enable only "Mail" for the gmail account
