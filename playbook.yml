@@ -69,7 +69,7 @@
           - pwgen
           - redis
           - rsync
-          - shellcheck # m1 incompatible atm
+          - shellcheck
           - speedtest-cli
           - sqlite
           - streamlink
