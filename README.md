@@ -18,7 +18,8 @@ $ ./run.sh home|work
 7. Install Backblaze.
 8. Enable App Expose in touchpad settings
 9. Sign in to Music using the gmail account
-10. Things to watch out for:
+10. Enable only "Mail" for the gmail account
+11. Things to watch out for:
 - https://www.reddit.com/r/MacOSBeta/comments/qjgqjx/i_think_ive_found_a_fix_for_the_bluetooth/
 - https://mnpn.github.io/blog/airplay-network-disaster
 - https://twitter.com/benskuhn/status/1524791658381910023
