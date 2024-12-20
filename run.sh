@@ -11,13 +11,13 @@ fi
 sudo -v
 
 sudo mkdir -p /usr/local/bin
-sudo chown andrea /usr/local/bin
+sudo chown andreausuelli /usr/local/bin
 
 # Keep-alive sudo until `clenaup.sh` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if [ ! -f /opt/homebrew/bin/brew ]; then
-	NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
@@ -27,7 +27,7 @@ if [ ! -f /usr/local/bin/ansible ]; then
 fi
 
 if [ ! -f ~/.zshrc ]; then
-	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 ansible-galaxy install -gr galaxy-roles.yml
