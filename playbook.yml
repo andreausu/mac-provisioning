@@ -25,6 +25,12 @@
           - hashicorp/tap
       when: role == "work"
 
+    - name: Ensure home related brew taps are installed
+      homebrew_tap:
+        name:
+          - siderolabs/tap
+      when: role == "home"
+
     - name: Ensure required packages are installed
       homebrew:
         name:
@@ -32,6 +38,7 @@
           - ansible
           - automake
           - awscli
+          - cloudflared
           - coreutils # gdate, ...
           - curl
           - diff-pdf
@@ -48,7 +55,9 @@
           - iperf3
           - jsonnet
           - jsonpp
+          - helm
           - jq
+          - k9s
           - krew
           - kubernetes-cli
           - mitmproxy
@@ -69,12 +78,12 @@
           - streamlink
           - telnet
           - terminal-notifier
-          - hashicorp/tap/terraform
           - tree
           - tor
           - vim
           - yamllint
           - yarn
+          - yq
           - yt-dlp
           - watch
           - wget
@@ -85,35 +94,36 @@
     - name: Ensure required applications are installed
       homebrew:
         name:
-          - colima
           - k8sgpt-ai/k8sgpt/k8sgpt
-          - k9s
           - birdayz/kaf/kaf
           - mysql
-          - hashicorp/tap/packer
           - hashicorp/tap/vault
+          - hashicorp/tap/terraform
         state: present
       when: role == "work"
+
+    - name: Ensure required applications are installed
+      homebrew:
+        name:
+          - siderolabs/tap/talosctl
+        state: present
+      when: role == "home"
 
     - name: Ensure required applications are installed
       homebrew_cask:
         name:
           - 1password
           - appcleaner
-          - cloudflare-warp
           - discord
           - firefox
           - geekbench
           - google-chrome
-          - insomnia
-          # - logi-options-plus
+          - bruno
           - sublime-text
           - tableplus
           - the-unarchiver
-          - tor-browser
           - visual-studio-code
           - vlc
-          - xquartz
           - wireshark
           - zoom
         state: present
@@ -121,9 +131,12 @@
     - name: Ensure required applications are installed
       homebrew_cask:
         name:
+          - balenaetcher
           - calibre
-          - docker
+          - orbstack
           - mediainfo
+          - mullvadvpn
+          - tor-browser
           - whatsapp
         state: present
       when: role == "home"
@@ -133,6 +146,7 @@
         name:
           - amazon-chime
           - aws-vault
+          - cloudflare-warp
         state: present
       when: role == "work"
 

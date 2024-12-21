@@ -11,7 +11,8 @@ fi
 sudo -v
 
 sudo mkdir -p /usr/local/bin
-sudo chown andreausuelli /usr/local/bin
+USER="$(whoami)"
+sudo chown "$USER" /usr/local/bin
 
 # Keep-alive sudo until `clenaup.sh` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
