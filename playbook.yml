@@ -17,6 +17,11 @@
     # - role: geerlingguy.mac.mas
 
   tasks:
+    - name: Ensure brew taps are installed
+      homebrew_tap:
+        name:
+          - teamookla/speedtest
+
     - name: Ensure work related brew taps are installed
       homebrew_tap:
         name:
@@ -76,6 +81,7 @@
           - speedtest-cli
           - sqlite
           - streamlink
+          - teamookla/speedtest/speedtest
           - telnet
           - terminal-notifier
           - tree
