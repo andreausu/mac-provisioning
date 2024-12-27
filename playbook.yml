@@ -26,6 +26,7 @@
       homebrew_tap:
         name:
           - birdayz/kaf
+          - common-fate/granted
           - k8sgpt-ai/k8sgpt
           - hashicorp/tap
       when: role == "work"
@@ -102,7 +103,10 @@
         name:
           - k8sgpt-ai/k8sgpt/k8sgpt
           - birdayz/kaf/kaf
+          - gitleaks
+          - granted
           - mysql
+          - steampipe
           - hashicorp/tap/vault
           - hashicorp/tap/terraform
         state: present
@@ -153,6 +157,9 @@
           - amazon-chime
           - aws-vault
           - cloudflare-warp
+          - grammarly-desktop
+          - meetingbar
+          - rancher
         state: present
       when: role == "work"
 
@@ -164,7 +171,12 @@
         state: present
 
     - name: Ensure .zshrc file is in place
-      copy: src=files/.zshrc dest=~/.zshrc
+      copy: src=files/.zshrc_home dest=~/.zshrc
+      when: role == "home"
+
+    - name: Ensure .zshrc file is in place
+      copy: src=files/.zshrc_work dest=~/.zshrc
+      when: role == "work"
 
     - name: Ensure cleanup script is installed
       copy: src=files/cleanup dest=/usr/local/bin/cleanup mode=0755
