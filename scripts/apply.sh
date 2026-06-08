@@ -23,6 +23,8 @@ while true; do
   sleep 60
   kill -0 "$$" || exit
 done 2>/dev/null &
+sudo_keepalive_pid=$!
+trap 'kill "$sudo_keepalive_pid" 2>/dev/null || true' EXIT
 
 if ! command -v brew >/dev/null 2>&1; then
   if [[ -x /opt/homebrew/bin/brew ]]; then
