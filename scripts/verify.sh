@@ -62,7 +62,7 @@ if grep -RInEi 'ansible|ansible-playbook|ansible-galaxy|homebrew_cask|homebrew_t
 fi
 
 if command -v nix >/dev/null 2>&1; then
-  nix --extra-experimental-features "nix-command flakes" flake check "$ROOT_DIR"
+  nix --extra-experimental-features "nix-command flakes" flake check --no-write-lock-file "$ROOT_DIR"
 else
   printf 'skip: nix is not available, flake check not run\n'
 fi
@@ -72,9 +72,14 @@ if [[ "${CHECK_BREW_STATE:-0}" == "1" ]]; then
     printf 'brew is required when CHECK_BREW_STATE=1\n' >&2
     fail=1
   else
-    brew bundle check --file "$ROOT_DIR/Brewfile.common"
-    brew bundle check --file "$ROOT_DIR/Brewfile.home"
-    brew bundle check --file "$ROOT_DIR/Brewfile.work"
+    for brewfile in \
+      "$ROOT_DIR/Brewfile.common" \
+      "$ROOT_DIR/Brewfile.home" \
+      "$ROOT_DIR/Brewfile.work"; do
+      if ! brew bundle check --file "$brewfile"; then
+        fail=1
+      fi
+    done
   fi
 fi
 
