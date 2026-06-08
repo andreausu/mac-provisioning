@@ -52,7 +52,7 @@ for file in "$ROOT_DIR"/scripts/*.sh "$ROOT_DIR/files/cleanup"; do
   fi
 done
 
-if grep -RInE 'ansible|ansible-playbook|ansible-galaxy|homebrew_cask|homebrew:' \
+if grep -RInEi 'ansible|ansible-playbook|ansible-galaxy|homebrew_cask|homebrew_tap|homebrew:' \
   --exclude=verify.sh \
   --exclude-dir=.git \
   --exclude-dir=docs \
