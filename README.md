@@ -1,25 +1,122 @@
-macOS Provisioning
-================
+# macOS Provisioning
 
-Ansible playbook for provisioning my MacBook.
+Personal macOS provisioning with:
 
-Just run:
+- nix-darwin for system configuration.
+- Home Manager for user shell configuration.
+- Homebrew Bundle for Homebrew taps, formulae, and casks.
+
+The project exposes two profiles:
+
+- `home`
+- `work`
+
+## First Run
 
 ```shell
-$ ./run.sh home|work
+./scripts/bootstrap.sh home
 ```
 
-1. Run the main bash script
-2. Sign in to the Mac App Store using the gmail account
-3. Sign in to Firefox
-4. Enable unlock with apple watch
-5. To complete the installation of Cask logi-options-plus, you must also run the installer at: `l/latest/logioptionsplus_installer.app`
-6. Install Backblaze
-7. Enable App Expose in touchpad settings
-8. Sign in to Music using the gmail account
-9. Enable only "Mail" for the gmail account
-10. Things to watch out for:
-- https://www.reddit.com/r/MacOSBeta/comments/qjgqjx/i_think_ive_found_a_fix_for_the_bluetooth/
-- https://mnpn.github.io/blog/airplay-network-disaster
-- https://twitter.com/benskuhn/status/1524791658381910023
-- https://discussions.apple.com/thread/8268678
+or:
+
+```shell
+./scripts/bootstrap.sh work
+```
+
+The bootstrap script checks for Xcode Command Line Tools, installs Nix when missing, installs Homebrew when missing, and then applies the selected profile.
+
+## Apply An Existing Setup
+
+```shell
+./scripts/apply.sh home
+```
+
+or:
+
+```shell
+./scripts/apply.sh work
+```
+
+The apply script runs:
+
+```shell
+brew bundle --file Brewfile.common
+brew bundle --file Brewfile.home
+```
+
+or:
+
+```shell
+brew bundle --file Brewfile.common
+brew bundle --file Brewfile.work
+```
+
+Then it runs `darwin-rebuild switch --flake .#home` or `darwin-rebuild switch --flake .#work`.
+
+## Files
+
+- `flake.nix`: nix-darwin and Home Manager entry point.
+- `modules/darwin/common.nix`: shared macOS system settings.
+- `modules/darwin/home.nix`: home system profile.
+- `modules/darwin/work.nix`: work system profile and work helper tools.
+- `modules/home/common.nix`: shared zsh configuration.
+- `modules/home/home.nix`: home zsh profile.
+- `modules/home/work.nix`: work zsh profile.
+- `Brewfile.common`: shared Homebrew packages and apps.
+- `Brewfile.home`: home-only Homebrew packages and apps.
+- `Brewfile.work`: work-only Homebrew packages and apps.
+- `files/cleanup`: cleanup command installed through nix-darwin.
+
+## Update
+
+Update flake inputs:
+
+```shell
+nix --extra-experimental-features "nix-command flakes" flake update
+```
+
+Update Homebrew packages during an apply:
+
+```shell
+brew update
+./scripts/apply.sh home
+```
+
+or:
+
+```shell
+brew update
+./scripts/apply.sh work
+```
+
+## Verify
+
+Run static checks:
+
+```shell
+./scripts/verify.sh
+```
+
+After a profile has been applied, verify Homebrew Bundle state:
+
+```shell
+CHECK_BREW_STATE=1 ./scripts/verify.sh
+```
+
+## Manual Steps
+
+Some setup still needs interactive macOS or app sign-in:
+
+1. Sign in to the Mac App Store.
+2. Sign in to Firefox.
+3. Enable unlock with Apple Watch.
+4. Install Backblaze.
+5. Enable App Expose in trackpad settings.
+6. Sign in to Music.
+7. Enable only Mail for the Gmail account.
+
+## Notes
+
+- Homebrew package inventory intentionally lives in Brewfiles instead of nix-darwin `homebrew.*` options.
+- `work` installs `biscuit` and `electro` through nix-darwin activation scripts because they are direct URL installs in the previous workflow.
+- The legacy provisioning workflow has been removed.
