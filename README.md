@@ -97,11 +97,13 @@ Run static checks:
 ./scripts/verify.sh
 ```
 
-After a profile has been applied, verify Homebrew Bundle state:
+To verify every Brewfile listed in the repository against the current machine, run:
 
 ```shell
 CHECK_BREW_STATE=1 ./scripts/verify.sh
 ```
+
+That check is intentionally stricter than a single-profile apply because it validates `Brewfile.common`, `Brewfile.home`, and `Brewfile.work`.
 
 ## Manual Steps
 
