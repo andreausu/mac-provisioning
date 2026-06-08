@@ -30,7 +30,7 @@ in
     pkgs.git
   ];
 
-  system.activationScripts.macDefaults.text = ''
+  system.activationScripts.postActivation.text = ''
     set -euo pipefail
 
     user_defaults() {

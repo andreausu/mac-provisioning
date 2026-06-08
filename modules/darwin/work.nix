@@ -1,7 +1,7 @@
-{ ... }:
+{ lib, ... }:
 
 {
-  system.activationScripts.workTools.text = ''
+  system.activationScripts.postActivation.text = lib.mkAfter ''
     set -euo pipefail
 
     /bin/mkdir -p /usr/local/bin
