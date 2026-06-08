@@ -1,0 +1,11 @@
+tap "siderolabs/tap"
+
+brew "siderolabs/tap/talosctl"
+
+cask "balenaetcher"
+cask "calibre"
+cask "mediainfo"
+cask "mullvadvpn"
+cask "orbstack"
+cask "tor-browser"
+cask "whatsapp"
