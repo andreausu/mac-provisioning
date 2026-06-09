@@ -1,6 +1,8 @@
 tap "siderolabs/tap"
 
 brew "siderolabs/tap/talosctl"
+brew "streamlink"
+brew "yt-dlp"
 
 cask "balenaetcher"
 cask "calibre"
